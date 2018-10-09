@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import DisplayImages from './Components/DisplayImages.js';
 
-class App extends Component {
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      imgs: []
+    };
+  }
+
+  componentDidMount() {
+    let YOUR_ACCESS_KEY = "c8820dbd1ad85cbbf0e357d033460e4931dd8b02d0f8526ca8b0300cfcc7bae8";
+    fetch("https://api.unsplash.com/photos/?client_id=" + YOUR_ACCESS_KEY)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ imgs: data });
+      })
+      .catch(err => {
+        console.log('Error happened during fetch!', err);
+      })
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>GALLERY</h1>
+        <DisplayImages data={this.state.imgs} />
       </div>
     );
   }
 }
-
-export default App;
